@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <title>Randonnées à La sainte Victoire</title>
+    <title>Randonnées à La sainte-Victoire</title>
 </head>
 <body>
     <div id="app">
@@ -15,6 +15,7 @@
                 <li>{{ item.distance }}km</li>
             </ul>
         </div>
+        <p>Nombre de randonnées : {{ totalHiking }}</p>
         <p>Durée totale : {{ totalDuration }}h</p>
         <p>Distance totale : {{ totalDistance }}km</p>
     </div>
@@ -23,7 +24,7 @@
         const app = new Vue({
             el: '#app',
             data: {
-                title: 'Randonnées à La sainte Victoire',
+                title: 'Randonnées à La sainte-Victoire',
                 moreInfos: {
                     title: 'Grand site Sainte-Victoire', 
                     link: 'http://www.grandsitesaintevictoire.com/'
@@ -35,6 +36,12 @@
                 ]
             },
             computed: {
+                totalHiking() {
+                    for (let item in this.hiking) {
+                        total = parseInt(item) + 1;
+                    }
+                    return total;
+                },
                 totalDuration() {
                     let total = 0;
                     for (let item in this.hiking) {
