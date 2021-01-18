@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Randonnées à La sainte Victoire</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{ title }}</h1>
+        <p>Pour plus de renseignement : <a :href="moreInfos.link" target="_blank">{{ moreInfos.title }}</a></p>
+        <h2>Les randonnées</h2>
+        <div v-for="item in hiking">
+            <h3>{{ item.name }}</h3>
+            <ul>
+                <li>{{ item.duration }}h</li>
+                <li>{{ item.distance }}km</li>
+            </ul>
+        </div>
+        <p>Durée totale : {{ totalDuration }}h</p>
+        <p>Distance totale : {{ totalDistance }}km</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                title: 'Randonnées à La sainte Victoire',
+                moreInfos: {
+                    title: 'Grand site Sainte-Victoire', 
+                    link: 'http://www.grandsitesaintevictoire.com/'
+                },
+                hiking: [
+                    { name: "Le tholonet", duration: 3, distance: 9},
+                    { name: "Vauvenargues", duration: 4, distance: 12},
+                    { name: "Jouques", duration: 3, distance: 8}
+                ]
+            },
+            computed: {
+                totalDuration() {
+                    let total = 0;
+                    for (let item in this.hiking) {
+                        total += this.hiking[item].duration;
+                    }
+                    return total;
+                },
+                totalDistance() {
+                    let total = 0;
+                    for (let item in this.hiking) {
+                        total += this.hiking[item].distance;
+                    }
+                    return total;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
