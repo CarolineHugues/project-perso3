@@ -20,11 +20,20 @@
             <label for="distance">Nombre de kilomètres ma randonnée : </label>
             <input id="distance" type="number" v-model="distance" />
         </div>
-        <div v-for="item in hiking" v-if="item.duration <= duration && item.distance <= distance">
+        <div>
+            <label for="difficulty">Difficulté de ma randonnée : </label>
+            <select id="difficulty" v-model="difficulty">
+                <option value="facile">Facile</option>
+                <option value="difficile">Difficile</option>
+                <option value="moyenne">Moyenne</option>
+            </select>
+        </div>
+        <div v-for="item in hiking" v-if="item.duration <= duration && item.distance <= distance && item.difficulty == difficulty">
             <h3>{{ item.name }}</h3>
             <ul>
                 <li>{{ item.duration }}h</li>
                 <li>{{ item.distance }}km</li>
+                <li>Difficulté : {{ item.difficulty }}</li>
             </ul>
         </div>
     </div>
@@ -39,12 +48,13 @@
                     link: 'http://www.grandsitesaintevictoire.com/'
                 },
                 hiking: [
-                    { name: "Le tholonet", duration: 3, distance: 9},
-                    { name: "Vauvenargues", duration: 4, distance: 12},
-                    { name: "Jouques", duration: 3, distance: 8}
+                    { name: "Le tholonet", duration: 3, distance: 9, difficulty: 'moyenne'},
+                    { name: "Vauvenargues", duration: 4, distance: 12, difficulty: 'difficile'},
+                    { name: "Jouques", duration: 3, distance: 8, difficulty: 'facile'}
                 ],
                 duration: '',
                 distance: '',
+                difficulty: '',
             },
             computed: {
                 totalHiking() {
