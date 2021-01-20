@@ -8,16 +8,19 @@
         <h1>{{ title }}</h1>
         <p>Pour plus de renseignement : <a :href="moreInfos.link" target="_blank">{{ moreInfos.title }}</a></p>
         <h2>Les randonnées</h2>
-        <div v-for="item in hiking">
+        <p>Nombre de randonnées : {{ totalHiking }}</p>
+        <p>Durée totale : {{ totalDuration }}h</p>
+        <p>Distance totale : {{ totalDistance }}km</p>
+        <h2>Ma randonnée personnalisée</h2>
+        <label for="duration">Durée de ma randonnée : </label>
+        <input id="duration" type="number" v-model="duration" />
+        <div v-for="item in hiking" v-if="item.duration <= duration">
             <h3>{{ item.name }}</h3>
             <ul>
                 <li>{{ item.duration }}h</li>
                 <li>{{ item.distance }}km</li>
             </ul>
         </div>
-        <p>Nombre de randonnées : {{ totalHiking }}</p>
-        <p>Durée totale : {{ totalDuration }}h</p>
-        <p>Distance totale : {{ totalDistance }}km</p>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script>
@@ -33,7 +36,8 @@
                     { name: "Le tholonet", duration: 3, distance: 9},
                     { name: "Vauvenargues", duration: 4, distance: 12},
                     { name: "Jouques", duration: 3, distance: 8}
-                ]
+                ],
+                duration: '',
             },
             computed: {
                 totalHiking() {
