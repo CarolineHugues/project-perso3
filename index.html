@@ -12,9 +12,15 @@
         <p>Durée totale : {{ totalDuration }}h</p>
         <p>Distance totale : {{ totalDistance }}km</p>
         <h2>Ma randonnée personnalisée</h2>
-        <label for="duration">Durée de ma randonnée : </label>
-        <input id="duration" type="number" v-model="duration" />
-        <div v-for="item in hiking" v-if="item.duration <= duration">
+        <div>
+            <label for="duration">Durée de ma randonnée : </label>
+            <input id="duration" type="number" v-model="duration" />
+        </div>
+        <div>
+            <label for="distance">Nombre de kilomètres ma randonnée : </label>
+            <input id="distance" type="number" v-model="distance" />
+        </div>
+        <div v-for="item in hiking" v-if="item.duration <= duration && item.distance <= distance">
             <h3>{{ item.name }}</h3>
             <ul>
                 <li>{{ item.duration }}h</li>
@@ -38,6 +44,7 @@
                     { name: "Jouques", duration: 3, distance: 8}
                 ],
                 duration: '',
+                distance: '',
             },
             computed: {
                 totalHiking() {
