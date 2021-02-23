@@ -17,7 +17,7 @@
             <input id="duration" type="number" v-model="duration" />
         </div>
         <div>
-            <label for="distance">Nombre de kilomètres ma randonnée : </label>
+            <label for="distance">Nombre de kilomètres de ma randonnée : </label>
             <input id="distance" type="number" v-model="distance" />
         </div>
         <div>
@@ -28,7 +28,7 @@
                 <option value="moyenne">Moyenne</option>
             </select>
         </div>
-        <div v-for="item in hiking" v-if="item.duration <= duration && item.distance <= distance && item.difficulty == difficulty">
+        <div v-for="item in filteredByAll">
             <h3>{{ item.name }}</h3>
             <ul>
                 <li>{{ item.duration }}h</li>
@@ -48,9 +48,9 @@
                     link: 'http://www.grandsitesaintevictoire.com/'
                 },
                 hiking: [
-                    { name: "Le tholonet", duration: 3, distance: 9, difficulty: 'moyenne'},
-                    { name: "Vauvenargues", duration: 4, distance: 12, difficulty: 'difficile'},
-                    { name: "Jouques", duration: 3, distance: 8, difficulty: 'facile'}
+                    { name: "Le tholonet", duration: '3', distance: '9', difficulty: 'moyenne'},
+                    { name: "Vauvenargues", duration: '4', distance: '12', difficulty: 'difficile'},
+                    { name: "Jouques", duration: '3', distance: '8', difficulty: 'facile'}
                 ],
                 duration: '',
                 distance: '',
@@ -76,9 +76,36 @@
                         total += this.hiking[item].distance;
                     }
                     return total;
+                },
+                filteredByAll() {
+                    return getByDifficulty(getByDuration(getByDistance(this.hiking, this.distance), this.duration), this.difficulty)
+                },
+                filteredByDifficulty() {
+                    return getByDifficulty(this.hiking, this.difficulty)
+                },
+                filteredByDuration() {
+                    return getByDuration(this.hiking, this.duration)
+                },
+                filteredByDistance() {
+                    return getByDistance(this.hiking, this.distance)
                 }
             }
         })
+
+        function getByDifficulty(hiking, difficulty) {
+            if (!difficulty) return hiking
+            return hiking.filter(item => item.difficulty === difficulty)
+        }
+
+        function getByDuration(hiking, duration) {
+            if (!duration) return hiking
+            return hiking.filter(item => item.duration === duration)
+        }
+
+        function getByDistance(hiking, distance) {
+            if (!distance) return hiking
+            return hiking.filter(item => item.distance === distance)
+        }
     </script>
 </body>
 </html>
