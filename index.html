@@ -15,14 +15,17 @@
         <div>
             <label for="duration">Durée de ma randonnée : </label>
             <input id="duration" type="number" v-model="duration" />
+            <button v-on:click="resetDuration">Reset</button>
         </div>
         <div>
             <label for="distance">Nombre de kilomètres de ma randonnée : </label>
             <input id="distance" type="number" v-model="distance" />
+            <button v-on:click="resetDistance">Reset</button>
         </div>
         <div>
             <label for="difficulty">Difficulté de ma randonnée : </label>
             <select id="difficulty" v-model="difficulty">
+                <option value="0">Toutes difficultées</option>
                 <option value="facile">Facile</option>
                 <option value="difficile">Difficile</option>
                 <option value="moyenne">Moyenne</option>
@@ -55,6 +58,16 @@
                 duration: '',
                 distance: '',
                 difficulty: '',
+            },
+            methods: {
+                resetDistance: function(e) {
+                    e.preventDefault()
+                    this.distance = ""
+                },
+                resetDuration: function(e) {
+                    e.preventDefault()
+                    this.duration = ""
+                }
             },
             computed: {
                 totalHiking() {
@@ -93,17 +106,17 @@
         })
 
         function getByDifficulty(hiking, difficulty) {
-            if (!difficulty) return hiking
+            if (!difficulty || difficulty === '0') return hiking
             return hiking.filter(item => item.difficulty === difficulty)
         }
 
         function getByDuration(hiking, duration) {
-            if (!duration) return hiking
+            if (!duration || duration === '0') return hiking
             return hiking.filter(item => item.duration === duration)
         }
 
         function getByDistance(hiking, distance) {
-            if (!distance) return hiking
+            if (!distance || distance === '0') return hiking
             return hiking.filter(item => item.distance === distance)
         }
     </script>
