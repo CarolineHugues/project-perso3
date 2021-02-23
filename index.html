@@ -67,6 +67,18 @@
                 resetDuration: function(e) {
                     e.preventDefault()
                     this.duration = ""
+                },
+                getByDifficulty: function(hiking, difficulty) {
+                    if (!difficulty || difficulty === '0') return hiking
+                    return hiking.filter(item => item.difficulty === difficulty)
+                },
+                getByDuration: function(hiking, duration) {
+                    if (!duration) return hiking
+                    return hiking.filter(item => item.duration === duration)
+                },
+                getByDistance: function(hiking, distance) {
+                    if (!distance) return hiking
+                    return hiking.filter(item => item.distance === distance)
                 }
             },
             computed: {
@@ -91,34 +103,19 @@
                     return total;
                 },
                 filteredByAll() {
-                    return getByDifficulty(getByDuration(getByDistance(this.hiking, this.distance), this.duration), this.difficulty)
+                    return this.getByDifficulty(this.getByDuration(this.getByDistance(this.hiking, this.distance), this.duration), this.difficulty)
                 },
                 filteredByDifficulty() {
-                    return getByDifficulty(this.hiking, this.difficulty)
+                    return this.getByDifficulty(this.hiking, this.difficulty)
                 },
                 filteredByDuration() {
-                    return getByDuration(this.hiking, this.duration)
+                    return this.getByDuration(this.hiking, this.duration)
                 },
                 filteredByDistance() {
-                    return getByDistance(this.hiking, this.distance)
+                    return this.getByDistance(this.hiking, this.distance)
                 }
             }
         })
-
-        function getByDifficulty(hiking, difficulty) {
-            if (!difficulty || difficulty === '0') return hiking
-            return hiking.filter(item => item.difficulty === difficulty)
-        }
-
-        function getByDuration(hiking, duration) {
-            if (!duration || duration === '0') return hiking
-            return hiking.filter(item => item.duration === duration)
-        }
-
-        function getByDistance(hiking, distance) {
-            if (!distance || distance === '0') return hiking
-            return hiking.filter(item => item.distance === distance)
-        }
     </script>
 </body>
 </html>
