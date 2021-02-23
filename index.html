@@ -91,14 +91,14 @@
                 totalDuration() {
                     let total = 0;
                     for (let item in this.hiking) {
-                        total += this.hiking[item].duration;
+                        total += parseInt(this.hiking[item].duration);
                     }
                     return total;
                 },
                 totalDistance() {
                     let total = 0;
                     for (let item in this.hiking) {
-                        total += this.hiking[item].distance;
+                        total += parseInt(this.hiking[item].distance);
                     }
                     return total;
                 },
