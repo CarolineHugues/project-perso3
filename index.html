@@ -14,12 +14,12 @@
         <h2>Ma randonnée personnalisée</h2>
         <div>
             <label for="duration">Durée de ma randonnée : </label>
-            <input id="duration" type="number" v-model="duration" />
+            <input id="duration" type="number" v-model="duration" /> h
             <button v-on:click="resetDuration">Reset</button>
         </div>
         <div>
             <label for="distance">Nombre de kilomètres de ma randonnée : </label>
-            <input id="distance" type="number" v-model="distance" />
+            <input id="distance" type="number" v-model="distance" /> km
             <button v-on:click="resetDistance">Reset</button>
         </div>
         <div>
@@ -31,12 +31,20 @@
                 <option value="moyenne">Moyenne</option>
             </select>
         </div>
+        <div>
+            <label for="interest">Points d'intérêt : </label>
+            <select id="interest" v-model="interest">
+                <option value="0">Tous les points d'interêt</option>
+                <option v-for="item in hiking" v-bind:value="item.interest">{{item.interestName}}</option>
+            </select>
+        </div>
         <div v-for="item in filteredByAll">
             <h3>{{ item.name }}</h3>
             <ul>
                 <li>{{ item.duration }}h</li>
                 <li>{{ item.distance }}km</li>
                 <li>Difficulté : {{ item.difficulty }}</li>
+                <li>A visiter durant la randonnée : {{item.interestName}}</li>
             </ul>
         </div>
     </div>
@@ -51,13 +59,15 @@
                     link: 'http://www.grandsitesaintevictoire.com/'
                 },
                 hiking: [
-                    { name: "Le tholonet", duration: '3', distance: '9', difficulty: 'moyenne'},
-                    { name: "Vauvenargues", duration: '4', distance: '12', difficulty: 'difficile'},
-                    { name: "Jouques", duration: '3', distance: '8', difficulty: 'facile'}
+                    { name: 'Puyloubier', duration: '1', distance: '3', difficulty: 'difficile', interestName: 'Chapelle Saint-Ser', interest:'1'},
+                    { name: 'Le tholonet', duration: '3', distance: '9', difficulty: 'moyenne', interestName: 'Barrages Zola et Bimont', interest:'2'},
+                    { name: 'Vauvenargues', duration: '4', distance: '12', difficulty: 'difficile', interestName: 'Prieuré et Croix de Provence', interest:'3'},
+                    { name: 'Jouques', duration: '3', distance: '8', difficulty: 'facile', interestName: 'Chapelle Notre-Dame de Consolation', interest:'4'}
                 ],
                 duration: '',
                 distance: '',
                 difficulty: '',
+                interest: ''
             },
             methods: {
                 resetDistance: function(e) {
@@ -79,6 +89,10 @@
                 getByDistance: function(hiking, distance) {
                     if (!distance) return hiking
                     return hiking.filter(item => item.distance === distance)
+                },
+                getByInterest: function(hiking, interest) {
+                    if (!interest || interest === '0') return hiking
+                    return hiking.filter(item => item.interest === interest)
                 }
             },
             computed: {
@@ -103,7 +117,7 @@
                     return total;
                 },
                 filteredByAll() {
-                    return this.getByDifficulty(this.getByDuration(this.getByDistance(this.hiking, this.distance), this.duration), this.difficulty)
+                    return this.getByDifficulty(this.getByDuration(this.getByDistance(this.getByInterest(this.hiking, this.interest), this.distance), this.duration), this.difficulty)
                 },
                 filteredByDifficulty() {
                     return this.getByDifficulty(this.hiking, this.difficulty)
@@ -113,6 +127,9 @@
                 },
                 filteredByDistance() {
                     return this.getByDistance(this.hiking, this.distance)
+                },
+                filteredByInterest() {
+                    return this.getByDistance(this.hiking, this.interest)
                 }
             }
         })
