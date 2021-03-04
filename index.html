@@ -106,7 +106,6 @@
                     return hiking.filter(item => item.interest === interest)
                 },
                 getByInterests: function(hiking, interests) {
-                    if (!interests) return hiking
                     let hikingInterests = []
                     for (i in hiking) {
                         hikingInterests.push(hiking[i].interest)
