@@ -31,13 +31,6 @@
                 <option value="moyenne">Moyenne</option>
             </select>
         </div>
-        <div>
-            <label for="interest">Points d'intérêt : </label>
-            <select id="interest" v-model="interest">
-                <option value="0">Tous les points d'interêt</option>
-                <option v-for="item in hiking" v-bind:value="item.interest">{{item.interestName}}</option>
-            </select>
-        </div>
         <div v-for="item in filteredByAll">
             <h3>{{ item.name }}</h3>
             <ul>
@@ -47,7 +40,24 @@
                 <li>A visiter durant la randonnée : {{item.interestName}}</li>
             </ul>
         </div>
+
+        <div id="interests">
+            <div v-for="item in hiking">
+                <input type="checkbox" v-bind:id="item.interest" v-bind:value="item.interest" v-model="interests">
+                <label v-bind:for="item.interest">{{item.interestName}}</label>
+            </div>
+        </div>
+        <div v-for="item in filteredByInterests">
+            <h3>{{ item[0].name }}</h3>
+            <ul>
+                <li>{{ item[0].duration }}h</li>
+                <li>{{ item[0].distance }}km</li>
+                <li>Difficulté : {{ item[0].difficulty }}</li>
+                <li>A visiter durant la randonnée : {{item[0].interestName}}</li>
+            </ul>
+        </div>
     </div>
+</div>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script>
         const app = new Vue({
@@ -67,7 +77,8 @@
                 duration: '',
                 distance: '',
                 difficulty: '',
-                interest: ''
+                interest: '',
+                interests: []
             },
             methods: {
                 resetDistance: function(e) {
@@ -93,6 +104,19 @@
                 getByInterest: function(hiking, interest) {
                     if (!interest || interest === '0') return hiking
                     return hiking.filter(item => item.interest === interest)
+                },
+                getByInterests: function(hiking, interests) {
+                    if (!interests) return hiking
+                    let hikingInterests = []
+                    for (i in hiking) {
+                        hikingInterests.push(hiking[i].interest)
+                    }
+                    let interest = hikingInterests.filter(item => interests.includes(item))
+                    let hikings = []
+                    for (let i = 0; i < interest.length; i++) {
+                        hikings.push(hiking.filter(item => item.interest === interest[i]))
+                    }
+                    return hikings
                 }
             },
             computed: {
@@ -117,7 +141,7 @@
                     return total;
                 },
                 filteredByAll() {
-                    return this.getByDifficulty(this.getByDuration(this.getByDistance(this.getByInterest(this.hiking, this.interest), this.distance), this.duration), this.difficulty)
+                    return this.getByDifficulty(this.getByDuration(this.getByDistance(this.hiking, this.distance), this.duration), this.difficulty)
                 },
                 filteredByDifficulty() {
                     return this.getByDifficulty(this.hiking, this.difficulty)
@@ -128,8 +152,8 @@
                 filteredByDistance() {
                     return this.getByDistance(this.hiking, this.distance)
                 },
-                filteredByInterest() {
-                    return this.getByDistance(this.hiking, this.interest)
+                filteredByInterests() {
+                    return this.getByInterests(this.hiking, this.interests)
                 }
             }
         })
