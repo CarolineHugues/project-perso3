@@ -13,7 +13,7 @@
         <p>Distance totale : {{ totalDistance }}km</p>
         <h2>Ma randonnée personnalisée</h2>
         <section>
-            <h3 v-on:click="showFilter1 = !showFilter1">Filter par durée, distance et difficulté</h3>
+            <h3 v-on:click="showFilter1 = !showFilter1">Par durée, distance et difficulté</h3>
             <section v-show="showFilter1">
                 <div>
                     <label for="duration">Durée de ma randonnée : </label>
@@ -47,7 +47,7 @@
         </section>
 
         <section>
-            <h3 v-on:click="showFilter2 = !showFilter2">Filter par centres d'intérêts</h3>
+            <h3 v-on:click="showFilter2 = !showFilter2">Par centres d'intérêts</h3>
             <section v-show="showFilter2">
                 <div id="interests">
                     <div v-for="item in hiking">
@@ -131,39 +131,39 @@
                 },
             },
             computed: {
-                totalHiking() {
+                totalHiking: function() {
                     for (let item in this.hiking) {
                         total = parseInt(item) + 1;
                     }
                     return total;
                 },
-                totalDuration() {
+                totalDuration: function() {
                     let total = 0;
                     for (let item in this.hiking) {
                         total += parseInt(this.hiking[item].duration);
                     }
                     return total;
                 },
-                totalDistance() {
+                totalDistance: function() {
                     let total = 0;
                     for (let item in this.hiking) {
                         total += parseInt(this.hiking[item].distance);
                     }
                     return total;
                 },
-                filteredByAll() {
+                filteredByAll: function() {
                     return this.getByDifficulty(this.getByDuration(this.getByDistance(this.hiking, this.distance), this.duration), this.difficulty)
                 },
-                filteredByDifficulty() {
+                filteredByDifficulty: function() {
                     return this.getByDifficulty(this.hiking, this.difficulty)
                 },
-                filteredByDuration() {
+                filteredByDuration: function() {
                     return this.getByDuration(this.hiking, this.duration)
                 },
-                filteredByDistance() {
+                filteredByDistance: function() {
                     return this.getByDistance(this.hiking, this.distance)
                 },
-                filteredByInterests() {
+                filteredByInterests: function() {
                     return this.getByInterests(this.hiking, this.interests)
                 },
             }
