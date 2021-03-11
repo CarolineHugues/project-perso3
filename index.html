@@ -12,52 +12,62 @@
         <p>Durée totale : {{ totalDuration }}h</p>
         <p>Distance totale : {{ totalDistance }}km</p>
         <h2>Ma randonnée personnalisée</h2>
-        <div>
-            <label for="duration">Durée de ma randonnée : </label>
-            <input id="duration" type="number" v-model="duration" /> h
-            <button v-on:click="resetDuration">Reset</button>
-        </div>
-        <div>
-            <label for="distance">Nombre de kilomètres de ma randonnée : </label>
-            <input id="distance" type="number" v-model="distance" /> km
-            <button v-on:click="resetDistance">Reset</button>
-        </div>
-        <div>
-            <label for="difficulty">Difficulté de ma randonnée : </label>
-            <select id="difficulty" v-model="difficulty">
-                <option value="0">Toutes difficultées</option>
-                <option value="facile">Facile</option>
-                <option value="difficile">Difficile</option>
-                <option value="moyenne">Moyenne</option>
-            </select>
-        </div>
-        <div v-for="item in filteredByAll">
-            <h3>{{ item.name }}</h3>
-            <ul>
-                <li>{{ item.duration }}h</li>
-                <li>{{ item.distance }}km</li>
-                <li>Difficulté : {{ item.difficulty }}</li>
-                <li>A visiter durant la randonnée : {{item.interestName}}</li>
-            </ul>
-        </div>
+        <section>
+            <h3 v-on:click="showFilter1 = !showFilter1">Filter par durée, distance et difficulté</h3>
+            <section v-show="showFilter1">
+                <div>
+                    <label for="duration">Durée de ma randonnée : </label>
+                    <input id="duration" type="number" v-model="duration" /> h
+                    <button v-on:click="resetDuration">Reset</button>
+                </div>
+                <div>
+                    <label for="distance">Nombre de kilomètres de ma randonnée : </label>
+                    <input id="distance" type="number" v-model="distance" /> km
+                    <button v-on:click="resetDistance">Reset</button>
+                </div>
+                <div>
+                    <label for="difficulty">Difficulté de ma randonnée : </label>
+                    <select id="difficulty" v-model="difficulty">
+                        <option value="0">Toutes difficultées</option>
+                        <option value="facile">Facile</option>
+                        <option value="difficile">Difficile</option>
+                        <option value="moyenne">Moyenne</option>
+                    </select>
+                </div>
+                <div v-for="item in filteredByAll">
+                    <h3>{{ item.name }}</h3>
+                    <ul>
+                        <li>{{ item.duration }}h</li>
+                        <li>{{ item.distance }}km</li>
+                        <li>Difficulté : {{ item.difficulty }}</li>
+                        <li>A visiter durant la randonnée : {{item.interestName}}</li>
+                    </ul>
+                </div>
+            </section>
+        </section>
 
-        <div id="interests">
-            <div v-for="item in hiking">
-                <input type="checkbox" v-bind:id="item.interest" v-bind:value="item.interest" v-model="interests">
-                <label v-bind:for="item.interest">{{item.interestName}}</label>
-            </div>
-        </div>
-        <div v-for="item in filteredByInterests">
-            <h3>{{ item[0].name }}</h3>
-            <ul>
-                <li>{{ item[0].duration }}h</li>
-                <li>{{ item[0].distance }}km</li>
-                <li>Difficulté : {{ item[0].difficulty }}</li>
-                <li>A visiter durant la randonnée : {{item[0].interestName}}</li>
-            </ul>
-        </div>
+        <section>
+            <h3 v-on:click="showFilter2 = !showFilter2">Filter par centres d'intérêts</h3>
+            <section v-show="showFilter2">
+                <div id="interests">
+                    <div v-for="item in hiking">
+                        <input type="checkbox" v-bind:id="item.interest" v-bind:value="item.interest" v-model="interests">
+                        <label v-bind:for="item.interest">{{item.interestName}}</label>
+                    </div>
+                </div>
+                <div v-for="item in filteredByInterests">
+                    <h3>{{ item[0].name }}</h3>
+                    <ul>
+                        <li>{{ item[0].duration }}h</li>
+                        <li>{{ item[0].distance }}km</li>
+                        <li>Difficulté : {{ item[0].difficulty }}</li>
+                        <li>A visiter durant la randonnée : {{item[0].interestName}}</li>
+                    </ul>
+                </div>
+            </section>
+        </section>
     </div>
-</div>
+
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script>
         const app = new Vue({
@@ -78,7 +88,9 @@
                 distance: '',
                 difficulty: '',
                 interest: '',
-                interests: []
+                interests: [],
+                showFilter1: false,
+                showFilter2: false
             },
             methods: {
                 resetDistance: function(e) {
@@ -116,7 +128,7 @@
                         hikings.push(hiking.filter(item => item.interest === interest[i]))
                     }
                     return hikings
-                }
+                },
             },
             computed: {
                 totalHiking() {
@@ -153,7 +165,7 @@
                 },
                 filteredByInterests() {
                     return this.getByInterests(this.hiking, this.interests)
-                }
+                },
             }
         })
     </script>
