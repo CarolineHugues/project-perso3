@@ -1,16 +1,19 @@
 <template>
   <div id="app">
     <Header />
+    <HikingsInfos />
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
+import Header from './components/Header.vue';
+import HikingsInfos from './components/HikingsInfos.vue';
 
 export default {
   name: 'App',
   components: {
-    Header
+    Header,
+    HikingsInfos
   }
 }
 </script>
